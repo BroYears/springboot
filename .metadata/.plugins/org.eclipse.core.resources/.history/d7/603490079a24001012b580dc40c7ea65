@@ -1,0 +1,6 @@
+spring:
+	application:
+	name: begin
+
+sever:
+	port: 8090

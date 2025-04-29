@@ -1,0 +1,20 @@
+package com.test.basic;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.context.SpringBootTest;
+
+@SpringBootTest
+class BuildTest {
+
+	@Test
+	void test() {
+		
+		//빌더 패턴, Builder Pattern
+		//- 복잡한 객체들을 단계별로 생성 할 수 있도록 하는 생성 디자인 패턴
+		
+		
+	}
+
+}

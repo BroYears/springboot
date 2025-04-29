@@ -1,0 +1,11 @@
+package com.test.basic.config;
+
+public class BoardConfig {
+
+	@Bean
+	public TagDAO getTagDAO() {
+
+		return new TagDAO();
+	}
+	
+}

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<!-- namespace는 보통 파일 이름 -->
+<!-- Mapper XML: SQL을 작성 -->
+<mapper namespace="test">
+	
+	
+	<!-- 
+	<insert id="">insert..</insert>
+	<update id="">update..</update>
+	<delete id="">delete..</delete>
+	<select id="">select..</select>
+	-->
+	
+	<select resultType="Integer" id="insa">
+		select count(*) form tblInsa
+	</select>	
+	
+	
+	
+	
+</mapper>

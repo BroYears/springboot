@@ -1,0 +1,14 @@
+Spring Boot + JSP
+
+프로젝트 생성
+- Name: "boot-jsp"
+- Language: Java
+- Type: Gradle - Groovy
+- Group: "com.test"
+- Artifact: "boot-jsp"
+- Package name: "com.test.bootjsp"
+- JDK: 17
+- Java: 17
+- Packaging: war(***) > jar로 해도 상관없음(배포에 문제가 있으려나?)
+- Dependencies:
+	- Spring Web

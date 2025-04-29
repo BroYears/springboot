@@ -1,0 +1,25 @@
+Spring Boot + JSP
+
+- 이전 수업: 독립된 톰캣 사용
+	- 설치: 직접 설치
+	- 배포: 톰캣 먼저 설치 후 war(zip) 파일로 배포
+	- 설정: sever.xml > 모든 사이트가 같은 하나의 톰캣을 사용
+- 이후 수업: 내장된 톰캣 사용
+	- 설치: 스프링 부트 포함
+	- 배포: jar/war 파일로 배포
+	- 설정: application.properties > 사이트마다 각자 설정
+	- 환경: 분산, 마이크로아키텍처 서비스, 모바일 서버 환경 등에서 사용
+	
+
+프로젝트 생성
+- Name: "boot-jsp"
+- Language: Java
+- Type: Gradle - Groovy
+- Group: "com.test"
+- Artifact: "boot-jsp"
+- Package name: "com.test.bootjsp"
+- JDK: 17
+- Java: 17
+- Packaging: war(***) > jar로 해도 상관없음(배포에 문제가 있으려나?)
+- Dependencies:
+	- Spring Web
