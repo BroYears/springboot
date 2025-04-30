@@ -10,4 +10,6 @@ public class MybaitsApplication {
 		SpringApplication.run(MybaitsApplication.class, args);
 	}
 
+
+
 }

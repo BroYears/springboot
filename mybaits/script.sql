@@ -74,7 +74,7 @@ insert into tblAddress values (seqAddress.nextVal, '햄스터', 1, '서울시 �
 insert into tblAddress values (seqAddress.nextVal, '낙타', 5, '서울시 강북구 번동', 'm');
 insert into tblAddress values (seqAddress.nextVal, '독수리', 3, '서울시 강북구 미아동', 'm');
 
-
+commit;
 
 
 

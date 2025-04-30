@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Insert title here</title>
+    <link rel="stylesheet" href="http://bit.ly/3WJ5ilK">
+    <style>
+		.one { color: blue; }
+		.two { text-decoration: underline; }
+		.three { background-color: gold; }
+    </style>
+</head>
+<body>
+	<!-- m3.html -->
+	<h1>HTML 속성 조작하기</h1>
+
+	<!-- *** 타임리프의 표현식들은 반드시 th:속성과 같이 사용해야 한다.-->
+	<!--<div>${name}</div>-->
+	<div th:text="${name}">홍길동</div>
+
+	<div>
+		<input th:type="text" name="num" th:size="${count}">
+		<br>
+		<input type="text" name="num" th:value="${name}" value="홍길동">
+	</div>
+
+	<hr>
+
+	<div th:class="two" class="one">Box</div>
+	<div th:attrappend="class='two'" class="one">Box</div>
+	<div th:attrprepend="class='two'" class="one">Box</div>
+	<div th:attrclassppend="three" class="one">Box</div>
+
+	<hr>
+
+	<div>
+		<input type="checkbox" checked>
+		<input type="checkbox" th:checked="true" >
+		<input type="checkbox" th:checked="false" >
+	</div>
+
+	<hr>
+
+	<div style="background-color: cornflowerblue;">상자</div>
+	<div th:style="'background-color: ' + ${color};">상자</div>
+
+	<script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+	<script src="https://bit.ly/4cMuheh"></script>
+	<script>
+
+    </script>
+</body>
+</html>
+
+
+
+
