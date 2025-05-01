@@ -92,7 +92,6 @@ public class TestController {
         int count = mapper.count();
         String name = mapper.getName(1);
 
-        //객체 전달
         AddressDTO dto = mapper.get(2);
 
         Map<String,String> map = new HashMap<String,String>();
@@ -107,12 +106,13 @@ public class TestController {
         model.addAttribute("name", name);
         model.addAttribute("dto", dto);
         model.addAttribute("map", map);
+        model.addAttribute("names", names);
+        model.addAttribute("list", list);
+
         model.addAttribute("txt1", txt1);
         model.addAttribute("txt2", txt2);
 
         return "m5";
-
-
     }
 
     @GetMapping("/m6")
@@ -126,8 +126,6 @@ public class TestController {
         model.addAttribute("num2", num2);
         model.addAttribute("now", now);
 
-
-
         return "m6";
     }
 
@@ -137,7 +135,7 @@ public class TestController {
         int seq = 10;
         String mode = "add";
 
-        Map<String, String> map = new HashMap<String, String>();
+        Map<String,String> map = new HashMap<String,String>();
         map.put("search", "y");
         map.put("column", "content");
         map.put("word", "자바");
@@ -147,6 +145,47 @@ public class TestController {
         model.addAttribute("map", map);
 
         return "m7";
+    }
+
+    @GetMapping("/m8")
+    public String m8(Model model) {
+
+        int seq = 10;
+        String mode = "add"; //add, edit, del
+
+        Map<String,String> map = new HashMap<String,String>();
+        map.put("search", "y");
+        map.put("column", "content");
+        map.put("word", "자바");
+
+        List<String> names = mapper.names();
+        List<AddressDTO> list = mapper.list();
+
+        model.addAttribute("seq", seq);
+        model.addAttribute("mode", mode);
+        model.addAttribute("map", map);
+        model.addAttribute("names", names);
+        model.addAttribute("list", list);
+
+        return "m8";
+    }
+
+    @GetMapping("/m9")
+    public String m9(Model model) {
+
+        return "m9";
+    }
+
+    @GetMapping("/m10")
+    public String m10(Model model) {
+
+        return "m10";
+    }
+
+    @GetMapping("/m11")
+    public String m11(Model model) {
+
+        return "m11";
     }
 
 }

@@ -21,7 +21,7 @@
         <a th:href="|/list.do?seq=${seq}|">돌아가기</a>
         <a href="/list.do?seq=[[${seq}]]">돌아가기</a>
 
-        <a th:href="@{/list.do(seq=10,ing=y)}">돌아가기</a>
+        <a th:href="@{/list.do(seq=10,ing='y')}">돌아가기</a>
         <a th:href="@{/list.do(seq=${seq}, mode=${mode})}">돌아가기</a>
 
         <hr>
@@ -36,6 +36,7 @@
 
     </div>
 
+    <hr>
 
     <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
     <script src="https://bit.ly/4cMuheh"></script>
