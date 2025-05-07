@@ -31,14 +31,14 @@
             <th>성별</th>
             <td>
                 <select name="gender">
-                    <option value="m" th:selected="${dto.gender == 'm'}">남자</option>
-                    <option value="f" th:selected="${dto.gender == 'f' }">여자</option>
+                    <option value="m" th:selected="${address.gender == 'm'}">남자</option>
+                    <option value="f" th:selected="${address.gender == 'f'}">여자</option>
                 </select>
             </td>
         </tr>
     </table>
     <div>
-        <button>추가하기</button>
+        <button>수정하기</button>
     </div>
     </form>
     

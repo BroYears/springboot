@@ -3,73 +3,110 @@ package com.test.jpa.repository;
 import java.util.List;
 import java.util.Optional;
 
+import com.test.jpa.dto.AddressDTO;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.test.jpa.entity.Address;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 //엔티티명 + "Repository"
-//JpaRepository<엔티티 자료형, 엔티티 @Id 자료형>
+//JpaRepository<엔티티 자료형, 엔티티 @Id 자료형> 
 public interface AddressRepository extends JpaRepository<Address, Long> {
 
-    Optional<Address> findByName(String name);
+	Optional<Address> findByName(String name);
 
-    Optional<Address> findByAge(Integer age);
+	Optional<Address> findByAge(Integer age);
 
-    //Optional<Address> findFirst();
+	//Optional<Address> findFirst();
 
-    Optional<Address> findFirstByAge(int age);
+	Optional<Address> findFirstByAge(int age);
 
-    List<Address> findFirst3ByAge(int age);
+	List<Address> findFirst3ByAge(int age);
 
-    List<Address> findFirst10ByAge(int age);
+	List<Address> findFirst10ByAge(int age);
 
-    Optional<Address> findByNameAndGender(String name, String gender);
+	Optional<Address> findByNameAndGender(String name, String gender);
 
-    List<Address> findByNameOrGender(String name, String gender);
+	List<Address> findByNameOrGender(String name, String gender);
 
-    List<Address> findByAgeAndGender(int age, String gender);
+	List<Address> findByAgeAndGender(int age, String gender);
 
-    List<Address> findByAgeAndGenderAndName(int i, String string, String string2);
+	List<Address> findByAgeAndGenderAndName(int i, String string, String string2);
 
-    List<Address> findByAgeGreaterThan(int i);
+	List<Address> findByAgeGreaterThan(int i);
 
-    List<Address> findByAgeGreaterThanEqual(int i);
+	List<Address> findByAgeGreaterThanEqual(int i);
 
-    List<Address> findByAgeLessThan(int i);
+	List<Address> findByAgeLessThan(int i);
 
-    List<Address> findByAgeBetween(int i, int j);
+	List<Address> findByAgeBetween(int i, int j);
 
-    List<Address> findByGenderAndAgeGreaterThanEqual(String string, int i);
+	List<Address> findByGenderAndAgeGreaterThanEqual(String string, int i);
 
-    List<Address> findByAddressIsNull();
+	List<Address> findByAddressIsNull();
 
-    List<Address> findByAddressIsNullAndGender(String string);
+	List<Address> findByAddressIsNullAndGender(String string);
 
-    List<Address> findByAddressIsNotNull();
+	List<Address> findByAddressIsNotNull();
 
-    List<Address> findByAgeIn(List<Integer> ageList);
+	List<Address> findByAgeIn(List<Integer> ageList);
 
-    List<Address> findByAgeNotIn(List<Integer> ageList);
+	List<Address> findByAgeNotIn(List<Integer> ageList);
 
-    List<Address> findByAddressStartingWith(String txt);
+	List<Address> findByAddressStartingWith(String string);
 
-    List<Address> findByAddressEndingWith(String txt);
+	List<Address> findByAddressEndingWith(String string);
 
-    List<Address> findByAddressContains(String txt);
+	List<Address> findByAddressContains(String string);
 
-    List<Address> findByAddressNotContains(String txt);
+	List<Address> findByAddressNotContains(String string);
 
-    List<Address> findByAddressLike(String s);
+	List<Address> findByAddressLike(String string);
 
-    Optional<Address> findByNameIs(String txt);
+	Optional<Address> findByNameIs(String string);
 
-    List<Address> findAllByOrderByNameAsc();
+	Optional<Address> findByNameEquals(String string);
 
-    List<Address> findAllByOrderByAgeAsc();
+	Optional<Address> findByNameIgnoreCase(String string);
 
-    List<Address> findByGenderOrderByAgeAsc(String m);
+	List<Address> findAllByOrderByNameAsc();
 
-    List<Address> findAllByOrderByGenderAscAgeDesc();
+	//List<Address> findAllByOrderByAgedesc();
+
+	List<Address> findAllByOrderByAgeDesc();
+
+	List<Address> findByGenderOrderByAgeAsc(String string);
+
+	List<Address> findAllByOrderByGenderAscAgeDesc();
+
+	List<Address> findAllByOrderByAddressAsc();
+
+	List<Address> findByGender(Sort by, String string);
+
+
+
+	//JPQL
+	//select * from tblAddress
+	//@Query("select a from Address as a")
+	@Query(value = "select * from tblAddress", nativeQuery = true)
+	List<Address> list();
+
+	@Query("select a.name from Address as a")
+	List<String> listName();
+
+	@Query("select a from Address as a where a.gender = ?1")
+	List<Address> list(String gender);
+
+	@Query("select a from Address as a where a.age >= :age")
+	List<Address> list(@Param(value="age") int age);
+
+	@Query("select a from Address as a where a.gender = :#{#dto.gender} and a.address like concat('%', :#{#dto.address}, '%')")
+	List<Address> list(AddressDTO dto);
+
+	//List<Address> findAllByOrderByGenderAgeDesc();
+	
 }
 
 

@@ -1,33 +1,52 @@
-Spring
-- STS3
-- Spring 5.X
-- JAVA 11
-- Spring Legacy MVC Project
+JPA, Java Persistence API
+- 자바 진영에서 ORM(Object-Relational Mapping) 기술 표준으로 사용되는 인터페이스의 모음
+- ORM
 
-Spring Boot
-- STS4
-- Spring Boot
-- Spring 6.X
-- JAVA 17 이상
+JDBC 기반 기술
+1. MyBatis
+    - Mapping Framework
+    - Java <- 중간 변환 역할 -> Oracle(SQL)
+2. JPA
+    - ORM
+    - Java <-> Oracle(SQL X)
+    - 모든 DB의 자료 > 자바처럼 접근 + 조작
+    
+1. 프로젝트 생성
+- Name: "jpa"
+- Language: Java
+- Type: Gradle - Groovy
+- Group: "com.test"
+- Artifact: "thymeleaf"
+- Package name: "com.test.jpa"
+- Java: 17
+- Packaging: jar
+- Dependencies:
+    - Lombok
+    - Spring Web
+    - Oracle Driver
+    - Spring Boot DevTools
+    - Thymeleaf
+    - Spring Data JPA
+
+2. JPA 설정
+    - build.gradle(나중에)
+    - application.yml
+
+3. 파일
+    - jpa > "script.sql"
+    - "com.test.jpa.controller" > "TestController.java"
+    - "com.test.jpa.entity" > "Address.java" //DTO 역할
+    - "com.test.jpa.repository" > "AddressRepository.java"(I) //DAO 역할
+    - "com.test.jpa.dto" > "AddressDTO.java"
+    - src/test/java > com.test.jpa > "AddressRepositoryTests.java"
+    
+    - "com.test.jpa.config" > "QueryDSLConfig.java"
+    - com.test.jpa.repository > "CustomAddressRepository.java"
 
 
 
 
-Eclipse > 자바로 구현한 프로그램 > JRE 필요 > 단지 Eclipse 실행을 위한 자바 버전
-1. Eclipse > JRE 내장 > 사용해서 실행 > 그냥 실행
-2. 사용자 자체적으로 JDK(JRE) 설치 > 사용해서 실행 > ini 수정(vm 옵션)
-
-Eclipse 실행 > 프로젝트 생성 > 프로젝트에서 사용할 자바 버전 지정 > Eclipse는 기본적으로 자기가 사용하는 자바 버전을 사용
-
-Eclipse > JDK21
-STS3(Eclipse) > JDK11
-STS4(Eclipse) > JDK17~JDK21
 
 
 
-
-
-
-
-
-
+    

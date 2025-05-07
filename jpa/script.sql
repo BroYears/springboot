@@ -1,3 +1,7 @@
+
+-- jpa > script.sql
+
+
 drop table tblInfo;
 drop table tblMemo;
 drop table tblAddress;
@@ -246,26 +250,24 @@ insert into tblMemo values (100, '최근에 들은 소식 있어? 콩콩~', sysd
 
 commit;
 
+-- 1 : 1
+-- tblAddress : tblInfo
+
+-- 1 : N
+-- tblAddress : tblMemo
+
+
 select count(*) from tblAddress; --50
 select count(*) from tblInfo; --50
 select count(*) from tblMemo; --100
 
-select * from tblAddress;
+select * from tblAddress order by seq desc;
 select * from tblInfo;
 select * from tblMemo;
 
+commit;
 
-select * from tabs;
-
-
-
-
-
-
-
-
-
-desc tblAddress;
+select * from tblAddress where age = 5 and rownum = 1;
 
 
 

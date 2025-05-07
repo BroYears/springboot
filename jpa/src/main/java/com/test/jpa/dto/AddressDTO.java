@@ -16,25 +16,32 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 public class AddressDTO {
-    private Long seq;
-    private String name;
-    private Integer age;
-    private String address;
-    private String gender;
 
 
-    public static Address toEntity(AddressDTO dto) {
+	private Long seq;
+	private String name;
+	private Integer age;
+	private String address;
+	private String gender;
+	
+	public AddressDTO(String name, Integer age, String address) {
+		this.name = name;
+		this.age = age;
+		this.address = address;
+	}
 
-        //AddressDTO > Address
-        return Address.builder()
-                .seq(dto.getSeq())
-                .name(dto.getName())
-                .age(dto.getAge())
-                .address(dto.getAddress())
-                .gender(dto.getGender())
-                .build();
-    }
-
+	public static Address toEntity(AddressDTO dto) {
+		
+		//AddressDTO > Address
+		return Address.builder()
+					.seq(dto.getSeq())
+					.name(dto.getName())
+					.age(dto.getAge())
+					.address(dto.getAddress())
+					.gender(dto.getGender())
+					.build();		
+	}
+	
 }
 
 

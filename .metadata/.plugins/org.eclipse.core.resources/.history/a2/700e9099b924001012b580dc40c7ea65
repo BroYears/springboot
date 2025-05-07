@@ -1,7 +1,0 @@
-package com.test.mybatis.mapper;
-
-
-@Mapper
-public interface AddressMapper {
-
-}
