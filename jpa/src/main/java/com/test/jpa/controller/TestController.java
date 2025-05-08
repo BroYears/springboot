@@ -3,13 +3,11 @@ package com.test.jpa.controller;
 import java.util.List;
 import java.util.Optional;
 
-import com.querydsl.core.Tuple;
-import com.test.jpa.repository.CustomAddressRepository;
+import com.test.jpa.entity.Memo;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,11 +15,15 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.querydsl.core.Tuple;
+import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.test.jpa.JpaApplication;
+import com.test.jpa.config.QueryDSLConfig;
 import com.test.jpa.dto.AddressDTO;
 import com.test.jpa.entity.Address;
 import com.test.jpa.entity.Info;
 import com.test.jpa.repository.AddressRepository;
+import com.test.jpa.repository.CustomAddressRepository;
 import com.test.jpa.repository.InfoRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -29,6 +31,10 @@ import lombok.RequiredArgsConstructor;
 @Controller
 @RequiredArgsConstructor
 public class TestController {
+
+	private final QueryDSLConfig queryDSLConfig;
+
+	private final JPAQueryFactory jpaQueryFactory;
 
 	private final JpaApplication jpaApplication;
 
@@ -54,30 +60,30 @@ public class TestController {
 
 	@PostMapping("/m1")
 	public String m1(Model model, AddressDTO dto) {
-		
+
 		/*
-		
+
 			JPA
-			
+
 			1. Query Method
 			- 정해진 키워드 사용 > 메서드명 생성 > 메서드 호출 > SQL 생성 > JDBC 실행
-						
+
 			2. JPQL, Java Persistence Query Language
 			- JPA에서 질의에 사용하는 전용 질의문(= SQL과 유사)
 			- 직업 질의문 작성 > 실행 > JDBC 실행
-			
+
 			3. Query DSL
 			- SQL 관련 모든 행동을 자바 메서드로 제공
 			- 자바 메서드 > 실행 > JDBC 실행
-		
+
 			정리
 			1. 단순한 CRUD > Query Method
 			2. 정적이면서 복잡한 쿼리 > JPQL
 			3. 정적/동적이면서 복잡한 쿼리 > Query DSL
-			
-			
-			
-			
+
+
+
+
 			1. Query Method
 			- 정해진 키워드 사용 > 메서드명 생성 > 메서드 호출 > SQL 생성 > JDBC 실행
 			- 메서드 이름으로 쿼리를 생성하는 방식 > 정해진 키워드 + 조합 > 메서드명 > JPA가 메서드명을 분석해서 > JPQL을 생성 > 변환 > SQL > 실행
@@ -89,7 +95,7 @@ public class TestController {
 				- 복잡한 업무 쿼리에는 부적합
 				- 복잡한 업무 구현 > 메서드명 매우 길어짐 > 가독성 저하
 				- 너무 복잡한 업무 > 이 방식으로는 불가능
-			
+
 		*/
 
 		//[C]RUD
@@ -132,7 +138,7 @@ public class TestController {
 
 //		if (address.isPresent()) {
 //			//model.addAttribute("address", address.get());
-//			model.addAttribute("address", Address.toDTO(address.get()));			
+//			model.addAttribute("address", Address.toDTO(address.get()));
 //		}
 
 		//Optional > ifPresent() > Address
@@ -383,14 +389,14 @@ public class TestController {
 	@GetMapping("/m14")
 	public String m14(Model model) {
 
-		//Is, Equals			
+		//Is, Equals
 
 		//Optional<Address> address = addressRepository.findByName("강아지");
 
-//		Optional<Address> address 
+//		Optional<Address> address
 //			= addressRepository.findByNameIs("강아지");
 
-//		Optional<Address> address 
+//		Optional<Address> address
 //			= addressRepository.findByNameEquals("강아지");
 
 		Optional<Address> address
@@ -599,7 +605,7 @@ public class TestController {
 		//tblAddress:tblMemo
 		//Address:Memo
 
-		Optional<Address> user =  addressRepository.findById(5L);
+		Optional<Address> user = addressRepository.findById(5L);
 
 		model.addAttribute("user", user.get());
 
@@ -614,23 +620,23 @@ public class TestController {
 		//- 추상 메서드명은 자유롭게 작성한다.
 		//- DB(테이블)을 대상으로 하는 SQL(X)
 		//- 엔티티를 대상으로 하는 SQL(O)
-		//- 엔티티 반드시 별칭 사용(as 생략 가능)
+		//- 엔티티를 반드시 별칭을 사용해야 된다.(as 생략 가능)
 
 
-		/*List<Address> list = addressRepository.findAll();*/
+		//List<Address> list = addressRepository.findAll();
 
 		//List<Address> list = addressRepository.list();
 
-//		List<String> list = addressRepository.listName();
-//		System.out.println(list);
+		//List<String> list = addressRepository.listName();
+		//System.out.println(list);
 
-//		List<Address> list = addressRepository.list("m");
+		//List<Address> list = addressRepository.list("m");
 
-//		List<Address> list = addressRepository.list(5);
+		//List<Address> list = addressRepository.list(5);
 
 		AddressDTO dto = new AddressDTO();
-		dto.setGender("f");
-		dto.setAddress("강남구");
+		dto.setGender("f"); // =
+		dto.setAddress("강남구"); // like
 
 		List<Address> list = addressRepository.list(dto);
 
@@ -642,14 +648,26 @@ public class TestController {
 	@GetMapping("/m24")
 	public String m24(Model model) {
 
+		//JPA 데이터 조작
+		//- DB 조작 <- 엔티티 조작 <- 리포지토리 조작 <- Query Method
+		//- DB 조작 <- 엔티티 조작 <- 리포지토리 조작 <- JPQL
+		//- DB 조작 <- 엔티티 조작 <- QClass <- 리포지토리 조작 <- Query DSL
+
+		//- JPA + MyBatis
+		//- Controller > Service > DAO > JPARepository
+		//                             > MyBatisRepository
+		//- Controller > Service > JPADAO
+		//                       > MyBatisDAO
+
+
 		//Query DSL(Domain Specific Language)
 		//- JPQL 작성을 도와주는 동적 쿼리 빌더
-		//- 대부분의 행동이 자바 메서드로 제공
+		//- 대부분의 행동이 자바 메서드로 제공된다.
 		//- 직접 JPQL 작성에 비해 오타 감소
-		
+
 		//QClass 생성
 		//- 각 엔티티에 대응되는 정적 클래스
-		//- 해당 엔티티를 조작하는 각종 메서드를 구현해준다.
+		//- 해당 엔티티를 조작(쿼리)하는 각종 메서드를 구현해준다.
 
 		//전체 리스트 조회
 		List<Address> list = customAddressRepository.findAll();
@@ -663,7 +681,7 @@ public class TestController {
 	public String m25(Model model) {
 
 		//단일 조회(레코드 1개)
-		Address address = customAddressRepository.findByName("강아지");
+		Address address = customAddressRepository.findByName("타조");
 
 		model.addAttribute("address", Address.toDTO(address));
 
@@ -686,11 +704,11 @@ public class TestController {
 	@GetMapping("/m27")
 	public String m27(Model model) {
 
-	 	List<Tuple> list =  customAddressRepository.findNameAndAgeAndAddress();
+		List<Tuple> list = customAddressRepository.findNameAndAgeAndAddress();
 
 		//System.out.println("list: " + list);
 
-		for (Tuple tuple:list){
+		for (Tuple tuple : list) {
 			System.out.println(tuple.get(0, String.class));
 			System.out.println(tuple.get(1, Integer.class));
 			System.out.println(tuple.get(2, String.class));
@@ -714,6 +732,158 @@ public class TestController {
 
 		return "result";
 	}
+
+	@GetMapping("/m29")
+	public String m29(Model model) {
+
+
+		List<Address> list = customAddressRepository.findAddressByGender("m");
+
+		model.addAttribute("list", list);
+
+		return "result";
+	}
+
+	@GetMapping("/m30")
+	public String m30(Model model) {
+		
+		//정렬
+		List<Address> list = customAddressRepository.findAddressOrderBy();
+
+		model.addAttribute("list", list);
+		
+		
+		return "result";
+	}
+
+	@GetMapping("/m31")
+	public String m31(Model model, @RequestParam(name= "page", defaultValue = "1") Integer page) {
+
+		//페이징
+		// - offset: 가져올 레코드의 시작 위치
+		// - limit: 가져올 개수
+
+		// - offset: 11
+		// - limit: 10
+		int offset = (page - 1) * 10;
+
+		List<Address> list = customAddressRepository.findAddressPaging(offset, 10);
+
+		model.addAttribute("list", list);
+
+		return "result";
+	}
+	
+	@GetMapping("/m32")
+	public String m32(Model model) {
+
+		Tuple tuple = customAddressRepository.findAddressAggregation();
+
+		model.addAttribute("tuple", tuple);
+
+		return "result";
+	}
+
+	@GetMapping("/m33")
+	public String m33(Model model) {
+
+		//groupby, having
+		List<Tuple> glist = customAddressRepository.findNameGroupByGender();
+
+		model.addAttribute("glist", glist);
+
+		return "result";
+	}
+
+	@GetMapping("/m34")
+	public String m34(Model model) {
+
+
+		//1:1 Join
+		//Address:Info
+		List<Info> ilist = customAddressRepository.findAddressJoinInfo();
+
+		model.addAttribute("ilist", ilist);
+
+
+		return "result";
+	}
+
+	@GetMapping("/m35")
+	public String m35(Model model) {
+
+		//1:N
+		//Address:Memo
+		//Address
+		//List<Address>
+		List<Address> mlist = customAddressRepository.findAddressJoinMemo();
+
+		model.addAttribute("mlist", mlist);
+
+
+		return "result";
+	}
+
+	@GetMapping("/m36")
+	public String m36(Model model) {
+
+		//Memo:Address:Info
+		//
+
+		List<Info> flist = customAddressRepository.findByAddressFullJoin();
+
+		model.addAttribute("flist", flist);
+
+
+		return "result";
+	}
+	
+	@GetMapping("/m37")
+	public String m37(Model model) {
+		
+		//서브쿼리 + Query DSL
+		//- where절(O)
+		//- select절(O)
+		//- from절(X)
+
+		//select * from tblAddress where age = (select max(age) from tblAddress);
+		List<Address> list = customAddressRepository.findAddressByMaxAge();
+
+		model.addAttribute("list", list);
+
+		return "result";
+	}
+
+	@GetMapping("/m38")
+	public String m38(Model model) {
+
+		//select memo, (select name from tblAddress where seq = tblMemo.aseq) as memo from tblMemo
+
+		List<Tuple> slist = customAddressRepository.findAddressMemo();
+
+		model.addAttribute("slist", slist);
+
+		return "result";
+	}
+
+	@GetMapping("/m39")
+	public String m39(Model model
+		, @RequestParam(name = "gender", required = false) String gender
+		, @RequestParam(name = "age", required = false) Integer age) {
+
+		//동적 쿼리
+		//- /m39 > select * from tblAddress
+		//- /m39?gender=m > select * from tblAddress where gender = 'm'
+		//- /m39?age=3 > select * from tblAddress where age = 3
+		//- /m39?gender=m&age=3 > select * from tblAddress where gender = 'm' and age = 3
+
+		List<Address> list = customAddressRepository.findAddressByMultiParameter(gender, age);
+
+		model.addAttribute("list", list);
+
+		return "result";
+	}
+
 
 }
 
