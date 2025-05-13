@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>결제 테스트</title>
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- iamport.payment.js -->
+    <script src="https://cdn.iamport.kr/v1/iamport.js"></script>
+    <style>
+        .container {
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            text-align: center;
+        }
+        .product-info {
+            margin-bottom: 30px;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+        }
+        .pay-button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .pay-button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="product-info">
+            <h2>상품 정보</h2>
+            <p>상품명: 테스트 상품</p>
+            <p>가격: 10,000원</p>
+        </div>
+        <button class="pay-button" onclick="requestPay()">결제하기</button>
+    </div>
+
+    <script>
+        var IMP = window.IMP;
+        IMP.init('imp62156183'); // 아임포트 테스트 계정 식별코드
+
+        function requestPay() {
+            const merchantUid = 'order_' + new Date().getTime(); // 주문번호 생성
+
+            IMP.request_pay({
+                pg: "html5_inicis.INIpayTest",  // 이니시스 테스트 모드
+                pay_method: "card",
+                merchant_uid: merchantUid,
+                name: "테스트 상품",
+                amount: 10000,
+                buyer_email: "test@test.com",
+                buyer_name: "테스트",
+                buyer_tel: "010-1234-5678"
+            }, function (rsp) {
+                if (rsp.success) {
+                    // 결제 성공 시 백엔드 검증 요청
+                    fetch(`/api/v1/payments/verify/${rsp.imp_uid}?merchant_uid=${merchantUid}&amount=${rsp.paid_amount}`)
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.status === 'paid') {
+                                alert('결제가 완료되었습니다.');
+                                // 결제 완료 후 처리 (예: 주문 완료 페이지로 이동)
+                            } else {
+                                alert('결제 검증에 실패하였습니다.');
+                            }
+                        })
+                        .catch(error => {
+                            console.error('결제 검증 중 오류 발생:', error);
+                            alert('결제 검증 중 오류가 발생했습니다.');
+                        });
+                } else {
+                    alert(`결제에 실패하였습니다. 에러 메시지: ${rsp.error_msg}`);
+                }
+            });
+        }
+    </script>
+</body>
+</html>

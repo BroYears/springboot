@@ -3,34 +3,34 @@ package com.test.oauth2.dto;
 import java.util.Map;
 
 public class NaverResponse implements OAuth2Response {
+	
+	//OAuth2User > NaverResponse
+	
+	private final Map<String,Object> attribute;
+	
+	public NaverResponse(Map<String,Object> attribute) {
+		this.attribute = (Map<String,Object>)attribute.get("response");
+	}
 
-    //OAuth2User > NaverResponse
+	@Override
+	public String getProvider() {
 
-    private final Map<String,Object> attribute;
+		return "naver";
+	}
+	@Override
+	public String getProviderId() {
 
-    public NaverResponse(Map<String,Object> attribute) {
-        this.attribute = (Map<String,Object>)attribute.get("response");
-    }
+		return attribute.get("id").toString();
+	}
+	@Override
+	public String getEmail() {
 
-    @Override
-    public String getProvider() {
+		return attribute.get("email").toString();
+	}
+	@Override
+	public String getName() {
 
-        return "naver";
-    }
-    @Override
-    public String getProviderId() {
-
-        return attribute.get("id").toString();
-    }
-    @Override
-    public String getEmail() {
-
-        return attribute.get("email").toString();
-    }
-    @Override
-    public String getName() {
-
-        return attribute.get("name").toString();
-    }
-
+		return attribute.get("name").toString();
+	}
+	
 }

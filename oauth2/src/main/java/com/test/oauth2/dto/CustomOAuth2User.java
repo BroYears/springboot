@@ -11,40 +11,55 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 
 public class CustomOAuth2User implements OAuth2User {
 
-    private final UserDTO userDTO;
+	private final UserDTO userDTO;
 
-    public CustomOAuth2User(UserDTO userDTO) {
-        this.userDTO = userDTO;
-    }
+	public CustomOAuth2User(UserDTO userDTO) {
+		this.userDTO = userDTO;
+	}
 
-    @Override
-    public Map<String, Object> getAttributes() {
-        //사용 안함
-        return null;
-    }
+	@Override
+	public Map<String, Object> getAttributes() {
+		//사용 안함
+		return null;
+	}
 
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
+	@Override
+	public Collection<? extends GrantedAuthority> getAuthorities() {
 
-        Collection<GrantedAuthority> list = new ArrayList<>();
+		Collection<GrantedAuthority> list = new ArrayList<>();
 
-        GrantedAuthority auth = () -> userDTO.getRole();
+		GrantedAuthority auth = () -> userDTO.getRole();
 
-        list.add(auth);
+		list.add(auth);
 
-        return list;
-    }
+		return list;
+	}
 
-    @Override
-    public String getName() {
+	@Override
+	public String getName() {
 
-        return userDTO.getName();
-    }
+		return userDTO.getName();
+	}
 
-    public String getUsername() {
+	public String getUsername() {
 
-        return userDTO.getUsername();
-    }
+		return userDTO.getUsername();
+	}
+
+	public Integer getAge() {
+
+		return userDTO.getAge();
+	}
+
+	public String getEmail() {
+
+		return userDTO.getEmail();
+	}
+
+	public String getAddress() {
+
+		return userDTO.getAddress();
+	}
 
 }
 
