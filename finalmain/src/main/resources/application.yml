@@ -1,0 +1,7 @@
+spring:
+  application:
+    name: finalmain
+
+
+server:
+  port: 8090

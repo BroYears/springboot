@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>SHOE BOX</title>
+    <style>
+        /* 기본 리셋 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+    body {
+        font-family: Arial, sans-serif;
+    }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        /* 섹션 공통 스타일 */
+        section {
+            margin: 50px auto;
+            max-width: 1200px;
+            padding: 0 20px;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .section-header h1 {
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .view-all, .view-more {
+            text-decoration: none;
+            color: #666;
+        }
+
+        /* LAUNCHES 섹션 */
+        .launches-slider {
+            position: relative;
+            background: #f5f5f5;
+            padding: 40px;
+            border-radius: 10px;
+            height: 500px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .slider-container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .slide {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            display: none;
+            text-align: center;
+        }
+
+        .slide.active {
+            display: block;
+        }
+
+        .slide img {
+            width: auto;
+            height: auto;
+            max-width: 80%;
+            max-height: 350px;
+            object-fit: contain;
+            margin: 0 auto;
+        }
+
+        .slide-info {
+            text-align: center;
+            padding: 20px;
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            /*background: rgba(255, 255, 255, 0.9);*/
+        }
+
+        .slider-prev, .slider-next {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(255,255,255,0.8);
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 20px;
+            z-index: 10;
+        }
+
+        .slider-prev { left: 20px; }
+        .slider-next { right: 20px; }
+
+        /* CURATION 섹션 */
+        .curation-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            margin-bottom: 50px;
+        }
+
+        .curation-item {
+            position: relative;
+            overflow: hidden;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .curation-item img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .item-info {
+            padding: 15px;
+            background: white;
+        }
+
+        .item-info h3 {
+            margin-bottom: 5px;
+            font-size: 16px;
+        }
+
+        /* 신상템 섹션 */
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            margin-bottom: 50px;
+        }
+
+        .product-item {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .product-item img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .product-info {
+            padding: 15px;
+        }
+
+        .product-info span {
+            display: block;
+            margin: 3px 0;
+        }
+
+        .brand {
+            font-weight: bold;
+            color: #333;
+        }
+
+        .name {
+            color: #666;
+        }
+
+        .price {
+            font-weight: bold;
+            color: #000;
+        }
+
+        /* 추천 브랜드 섹션 */
+        .recommended-brands {
+            background: #f8f8f8;
+            padding: 40px 0;
+            margin: 0;
+            max-width: none;
+        }
+
+        .brand-navigation {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 30px;
+            padding: 0 40px;
+            background: #fff;
+        }
+
+        .brand-names {
+            display: flex;
+            gap: 20px;
+            overflow-x: auto;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+            padding: 10px 0;
+        }
+
+        .brand-names::-webkit-scrollbar {
+            display: none;
+        }
+
+        .brand-nav-item {
+            padding: 5px 15px;
+            cursor: pointer;
+            white-space: nowrap;
+            color: #666;
+        }
+
+        .brand-nav-item.active {
+            color: #000;
+            font-weight: bold;
+        }
+
+        .nav-prev, .nav-next {
+            background: none;
+            border: none;
+            font-size: 20px;
+            cursor: pointer;
+            padding: 0 10px;
+        }
+
+        .price-info {
+            margin: 5px 0;
+        }
+
+        .original-price {
+            color: #999;
+            text-decoration: line-through;
+            font-size: 0.9em;
+            margin-right: 5px;
+        }
+
+        .sale-price {
+            color: #000;
+            font-weight: bold;
+        }
+
+        .discount {
+            color: #ff0000;
+            margin-left: 5px;
+        }
+
+        .product-tags {
+            margin-top: 5px;
+        }
+
+        .tag {
+            display: inline-block;
+            padding: 2px 6px;
+            margin-right: 5px;
+            background: #f0f0f0;
+            border-radius: 3px;
+            font-size: 0.8em;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <!-- LAUNCHES -->
+    <section class="launches-section">
+        <div class="section-header">
+            <h1>LAUNCHES</h1>
+            <a href="#" class="view-all">VIEW ALL</a>
+        </div>
+        <div class="launches-slider">
+            <button class="slider-prev" aria-label="이전 슬라이드"></button>
+            <div class="slider-container">
+                <div class="slide active">
+                    <img src="/images/21125_1712905511459.jpg" alt="아식스 신발">
+                    <div class="slide-info">
+                        <h3>ASICS</h3>
+                        <p>GEL-KAYANO 14 WHITE PURE GREY</p>
+                    </div>
+                </div>
+                <div class="slide">
+                    <img src="/images/21125_1712905511459.jpg" alt="나이키 신발">
+                    <div class="slide-info">
+                        <h3>NIKE</h3>
+                        <p>에어맥스</p>
+                    </div>
+                </div>
+            </div>
+            <button class="slider-next" aria-label="다음 슬라이드"></button>
+            <div class="slider-indicators">
+                <span class="indicator active"></span>
+                <span class="indicator"></span>
+            </div>
+        </div>
+    </section>
+
+    <!-- CURATION -->
+    <section class="curation-section">
+        <div class="section-header">
+            <h1>CURATION</h1>
+            <a href="#" class="view-all">VIEW ALL</a>
+        </div>
+        <div class="curation-grid">
+            <div class="curation-item">
+                <img src="/images/21125_1712905511459.jpg" alt="시선집중">
+                <div class="item-info">
+                    <h3>시선집중</h3>
+                    <p>설명텍스트</p>
+                </div>
+            </div>
+            <div class="curation-item">
+                <img src="/images/21125_1712905511459.jpg" alt="아식스의 모든 것">
+                <div class="item-info">
+                    <h3>아식스의 모든 것</h3>
+                    <p>설명텍스트</p>
+                </div>
+            </div>
+            <div class="curation-item">
+                <img src="/images/21125_1712905511459.jpg" alt="달리기 좋은 날씨를 즐기기">
+                <div class="item-info">
+                    <h3>달리기 좋은 날씨를 즐기기</h3>
+                    <p>설명텍스트</p>
+                </div>
+            </div>
+            <div class="curation-item">
+                <img src="/images/21125_1712905511459.jpg" alt="MEGA BRAND WEEK">
+                <div class="item-info">
+                    <h3>MEGA BRAND WEEK</h3>
+                    <p>설명텍스트</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 신상템 -->
+    <section class="new-items-section">
+        <div class="section-header">
+            <h1>놓치면 늦는 5월 신상템</h1>
+            <a href="#" class="view-more">MORE ></a>
+        </div>
+        <div class="products-grid">
+            <div class="product-item">
+                <img src="/images/21125_1712905511459.jpg" alt="아디다스">
+                <div class="product-info">
+                    <span class="brand">아디다스</span>
+                    <span class="name">삼바</span>
+                    <span class="price">109,000원</span>
+                </div>
+            </div>
+            <div class="product-item">
+                <img src="/images/21125_1712905511459.jpg" alt="아디다스">
+                <div class="product-info">
+                    <span class="brand">아디다스</span>
+                    <span class="name">삼바</span>
+                    <span class="price">109,000원</span>
+                </div>
+            </div>
+            <div class="product-item">
+                <img src="/images/21125_1712905511459.jpg" alt="아디다스">
+                <div class="product-info">
+                    <span class="brand">아디다스</span>
+                    <span class="name">삼바</span>
+                    <span class="price">99,000원</span>
+                </div>
+            </div>
+            <div class="product-item">
+                <img src="/images/21125_1712905511459.jpg" alt="뉴발란스">
+                <div class="product-info">
+                    <span class="brand">뉴발란스</span>
+                    <span class="name">M2002R</span>
+                    <span class="price">109,000원</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 추천 브랜드 -->
+    <section class="recommended-brands">
+        <div class="section-header">
+            <h1>추천 브랜드</h1>
+        </div>
+        <div class="brand-navigation">
+            <button class="nav-prev">&lt;</button>
+            <div class="brand-names">
+                <span class="brand-nav-item active">NIKE</span>
+                <span class="brand-nav-item">ADIDAS</span>
+                <span class="brand-nav-item">NEW BALANCE</span>
+                <span class="brand-nav-item">SKECHERS</span>
+                <span class="brand-nav-item">CONVERSE</span>
+                <span class="brand-nav-item">ARC'TERYX</span>
+                <span class="brand-nav-item">MLBEVO</span>
+                <span class="brand-nav-item">STEFANOROSSI</span>
+            </div>
+            <button class="nav-next">&gt;</button>
+        </div>
+        <div class="brand-slider">
+            <div class="brand-slide active">
+                <div class="brand-products">
+                    <div class="product-item">
+                        <img src="/images/21125_1712905511459.jpg" alt="스케쳐스">
+                        <div class="product-info">
+                            <span class="name">고 워크 조이</span>
+                            <div class="price-info">
+                                <span class="original-price">69,000원</span>
+                                <span class="sale-price">34,000원</span>
+                                <span class="discount">50%</span>
+                            </div>
+                            <div class="product-tags">
+                                <span class="tag">쿠폰</span>
+                                <span class="tag">무료배송</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="product-item">
+                        <img src="/images/21125_1712905511459.jpg" alt="스케쳐스">
+                        <div class="product-info">
+                            <span class="name">맥스 쿠셔닝</span>
+                            <div class="price-info">
+                                <span class="sale-price">59,000원</span>
+                            </div>
+                            <div class="product-tags">
+                                <span class="tag">쿠폰</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="product-item">
+                        <img src="/images/21125_1712905511459.jpg" alt="스케쳐스">
+                        <div class="product-info">
+                            <span class="name">맥스 쿠셔닝 엘리트</span>
+                            <div class="price-info">
+                                <span class="original-price">89,000원</span>
+                                <span class="sale-price">69,000원</span>
+                                <span class="discount">22%</span>
+                            </div>
+                            <div class="product-tags">
+                                <span class="tag">쿠폰</span>
+                                <span class="tag">무료배송</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="product-item">
+                        <img src="/images/21125_1712905511459.jpg" alt="스케쳐스">
+                        <div class="product-info">
+                            <span class="name">맥스 쿠셔닝 프로</span>
+                            <div class="price-info">
+                                <span class="original-price">159,000원</span>
+                                <span class="sale-price">95,000원</span>
+                                <span class="discount">40%</span>
+                            </div>
+                            <div class="product-tags">
+                                <span class="tag">쿠폰</span>
+                                <span class="tag">무료배송</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+    <script src="https://bit.ly/4cMuheh"></script>
+    <script>
+        $(document).ready(function() {
+            // LAUNCHES 슬라이더
+            let currentSlide = 0;
+            const slides = $('.slide');
+            
+            function showSlide(index) {
+                slides.removeClass('active');
+                slides.eq(index).addClass('active');
+            }
+            
+            $('.slider-next').click(function() {
+                currentSlide = (currentSlide + 1) % slides.length;
+                showSlide(currentSlide);
+            });
+            
+            $('.slider-prev').click(function() {
+                currentSlide = (currentSlide - 1 + slides.length) % slides.length;
+                showSlide(currentSlide);
+            });
+            
+            // 자동 슬라이드
+            setInterval(function() {
+                $('.slider-next').click();
+            }, 3000);
+            
+            // CURATION 아이템 페이드인
+            $('.curation-item').each(function(index) {
+                $(this).delay(index * 200).fadeIn(1000);
+            });
+            
+            // 추천 브랜드 네비게이션
+            $('.brand-nav-item').click(function() {
+                $('.brand-nav-item').removeClass('active');
+                $(this).addClass('active');
+            });
+            
+            // 브랜드 네비게이션 스크롤
+            $('.nav-prev').click(function() {
+                $('.brand-names').animate({
+                    scrollLeft: '-=100'
+                }, 300);
+            });
+            
+            $('.nav-next').click(function() {
+                $('.brand-names').animate({
+                    scrollLeft: '+=100'
+                }, 300);
+            });
+        });
+    </script>
+</body>
+</html>
